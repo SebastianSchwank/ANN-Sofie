@@ -35,10 +35,10 @@ As activation function I take the sigmoide function: https://de.wikipedia.org/wi
 Screenshot of the weights matrix of the three layered network which learns to detect the frequency of a sampled sine wave:
 ![Screenshot](https://github.com/schwenk/ANN-Sofie/blob/master/ANN_Sofie-Debug.png)
 
-If you want to give feedback to the calculus or the algorythm, don't hesitate to call me:
-+4915781670628
+If you want to give feedback to the calculus or the algorythm, don't hesitate to write an e-mail:
+sebastian.schwank@googlemail.com
 
 License:
 
 The permission is only for ediucational given.
-This software is written by Sebastian Schwank (+4915781670628) . These three sentences have to be included in the Software License and it's permitted to remove them.
+This software is written by Sebastian Schwank. These three sentences have to be included in the Software License and it's permitted to remove them.
