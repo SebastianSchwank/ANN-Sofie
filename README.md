@@ -1,7 +1,7 @@
 #Bi-Neuronal Network
 
 - Every neuron calculate the error for itself
-- The architecture is a multiple layered connected neural network with feedback connections (currently no training on this)
+- The architecture is a multiple layered connected neural network with feedback connections
 - It works without backpropagation
 - It displays all layers in one matrix
 
