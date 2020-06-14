@@ -42,3 +42,7 @@ License:
 
 The permission is only for ediucational given.
 This software is written by Sebastian Schwank. These three sentences have to be included in the Software License and it's permitted to remove them.
+
+TODO:
+
+Cuda Implementation
