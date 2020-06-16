@@ -81,7 +81,7 @@ void MainWindow::processNet(){
                         //cout << inputV[j];
                     }
                     targetV[k] = 1.0;
-                    targetV[numLessons+frequency] = 1.0;
+                    targetV[numLessons+frequency-1] = 1.0;
 
 
                     for(int i = 0; i < 32; i++){

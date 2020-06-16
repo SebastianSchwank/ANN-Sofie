@@ -21,6 +21,8 @@ NeuralCluster::NeuralCluster(int inputs, int outputs, int hidden){
         counter_counter.push_back(0);
         real_counter.push_back(0);
         differenceError.push_back(0);
+        valueHardeningReal.push_back(0.0);
+        valueHardeningCounter.push_back(0.0);
         vector<float> weightColumn;
         vector<float> momentumColumn;
         for(int j = 0; j < inputs+outputs+hidden; j++){
@@ -95,8 +97,8 @@ void NeuralCluster::train(float learningRate){
             if(!skip){
             //weights[i][j] += ((realNetActivation[j]))*(differenceError[i])*learningRate;
 
-            weights[i][j] += ((counterActivation[j]))*(realNetActivation[i]-counterActivation[i])*learningRate;
-            weights[i][j] = weights[i][j]*(1.0-0.1*((counterActivation[j]*(realNetActivation[i]-counterActivation[i]))));
+            weights[i][j] += ((counterActivation[j]))*(realNetActivation[i]-counterActivation[i])*counterActivation[i]*(1.0-counterActivation[i])*learningRate;
+            //weights[i][j] = weights[i][j]*(1.0-0.1*((counterActivation[j]*(realNetActivation[i]-counterActivation[i]))));
 
             //weights[i][j] -= ((1.0-counterActivation[j]))*(realNetActivation[i]-counterActivation[i])*learningRate;
             //weights[i][j] -= ((1.0-counterActivation[j]))*(counterActivation[i])*(1.0-counterActivation[i])*(realNetActivation[i]-counterActivation[i])*learningRate;
@@ -187,7 +189,8 @@ void NeuralCluster::propergate(vector<float> input,vector<float> output, bool sl
             if(deltaEnergys[i]-0.5 > 0.0) counterActivation[i] += (deltaEnergys[i]-0.5)*(1.0-counterActivation[i]);
             else counterActivation[i] += (deltaEnergys[i]-0.5)*(counterActivation[i]);
             */
-            counterActivation[i] = (counterActivation[i]+deltaEnergys[i])/2.0;
+            valueHardeningCounter[i] = (valueHardeningCounter[i]+abs(counterActivation[i]-deltaEnergysI[i]))/2.0;
+            counterActivation[i] = (valueHardeningCounter[i])*counterActivation[i]+(1.0-valueHardeningCounter[i])*deltaEnergys[i];
 
             //counterActivation[i] = deltaEnergys[i];
 
@@ -217,8 +220,8 @@ void NeuralCluster::propergate(vector<float> input,vector<float> output, bool sl
             if(deltaEnergysI[i]-0.5 > 0.0) realNetActivation[i] += (deltaEnergysI[i]-0.5)*(1.0-realNetActivation[i]);
             else realNetActivation[i] += (deltaEnergysI[i]-0.5)*(realNetActivation[i]);
             */
-
-            realNetActivation[i] = (deltaEnergysI[i]+realNetActivation[i])/2.0;
+            valueHardeningReal[i] = (valueHardeningReal[i]+abs(realNetActivation[i]-deltaEnergysI[i]))/2.0;
+            realNetActivation[i] = (valueHardeningReal[i])*realNetActivation[i]+(1.0-valueHardeningReal[i])*deltaEnergysI[i];
             //realNetActivation[i] = deltaEnergysI[i];
 
             //realNetActivation[i] = deltaEnergysI[i];

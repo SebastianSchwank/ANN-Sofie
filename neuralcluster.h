@@ -66,6 +66,8 @@ private:
     vector<float>         firingRate_counter;
     vector<float>         meanActivationReal;
     vector<float>         meanActivationCounter;
+    vector<float>         valueHardeningReal;
+    vector<float>         valueHardeningCounter;
 
 };
 
