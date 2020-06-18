@@ -12,7 +12,7 @@ Pro's:
 - Good paralellisation thanks to self error calculating neurons (difference between two networks sharing the same wheights)
 - Debug window for the activity of the neurons over all lessons included
 - Learning speed improvement VS. backpropagation
-- Value hardening for rekurrence on neuron level
+- Value hardening for rekurrence on neuron level and stabilisizing oszillations
 
  In this demo the net learns to analyse the frequency for a given sine function (the count of the active neuron is the frequency).
 
