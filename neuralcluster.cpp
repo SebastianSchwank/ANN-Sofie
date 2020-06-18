@@ -97,7 +97,9 @@ void NeuralCluster::train(float learningRate){
             if(!skip){
             //weights[i][j] += ((realNetActivation[j]))*(differenceError[i])*learningRate;
 
-            weights[i][j] += ((counterActivation[j]))*(realNetActivation[i]-counterActivation[i])*counterActivation[i]*(1.0-counterActivation[i])*learningRate;
+            weights[i][j] += ((counterActivation[j]))*(realNetActivation[i]-counterActivation[i])*(counterActivation[i])*(1.0-counterActivation[i])*learningRate;
+
+
             //weights[i][j] = weights[i][j]*(1.0-0.1*((counterActivation[j]*(realNetActivation[i]-counterActivation[i]))));
 
             //weights[i][j] -= ((1.0-counterActivation[j]))*(realNetActivation[i]-counterActivation[i])*learningRate;
@@ -189,7 +191,7 @@ void NeuralCluster::propergate(vector<float> input,vector<float> output, bool sl
             if(deltaEnergys[i]-0.5 > 0.0) counterActivation[i] += (deltaEnergys[i]-0.5)*(1.0-counterActivation[i]);
             else counterActivation[i] += (deltaEnergys[i]-0.5)*(counterActivation[i]);
             */
-            valueHardeningCounter[i] = (valueHardeningCounter[i]+abs(counterActivation[i]-deltaEnergysI[i]))/2.0;
+            valueHardeningCounter[i] = (valueHardeningCounter[i]+abs(counterActivation[i]-realNetActivation[i]))/2.0;
             counterActivation[i] = (valueHardeningCounter[i])*counterActivation[i]+(1.0-valueHardeningCounter[i])*deltaEnergys[i];
 
             //counterActivation[i] = deltaEnergys[i];
@@ -220,7 +222,7 @@ void NeuralCluster::propergate(vector<float> input,vector<float> output, bool sl
             if(deltaEnergysI[i]-0.5 > 0.0) realNetActivation[i] += (deltaEnergysI[i]-0.5)*(1.0-realNetActivation[i]);
             else realNetActivation[i] += (deltaEnergysI[i]-0.5)*(realNetActivation[i]);
             */
-            valueHardeningReal[i] = (valueHardeningReal[i]+abs(realNetActivation[i]-deltaEnergysI[i]))/2.0;
+            valueHardeningReal[i] = (valueHardeningReal[i]+abs(realNetActivation[i]-counterActivation[i]))/2.0;
             realNetActivation[i] = (valueHardeningReal[i])*realNetActivation[i]+(1.0-valueHardeningReal[i])*deltaEnergysI[i];
             //realNetActivation[i] = deltaEnergysI[i];
 

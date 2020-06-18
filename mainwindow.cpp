@@ -108,7 +108,7 @@ void MainWindow::processNet(){
 
                     for(int i = 0; i < 32; i++){
                         Cluster0->propergate(inputV,targetV,false);
-                        Cluster0->train(0.5);
+                        Cluster0->train(0.1);
                     }
 
                     vector<float> mergedTarget;
