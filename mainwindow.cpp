@@ -89,11 +89,6 @@ void MainWindow::processNet(){
                         ClusterBP->propergate(inputV,emptyV,false);
                     }
                     vector<float> out0 = Cluster0->getActivation();
-
-
-                    for(int i = 0; i < 64; i++){
-                        ClusterBP->propergate(inputV,emptyV,0.0);
-                    }
                     vector<float> out1 = ClusterBP->getActivation();
 
                     for(int i = 0; i < numOutputs; i++){
@@ -103,6 +98,7 @@ void MainWindow::processNet(){
                     }
 
                     impulseResonses.push_back(out0);
+                    impulseResonses.push_back(out1);
 
             //Training pass
 
@@ -123,10 +119,9 @@ void MainWindow::processNet(){
 
                     for(int i = 0; i < 33; i++){
                         ClusterBP->propergate(inputV,emptyV,true);
-                        ClusterBP->trainBP(mergedTarget,0.1);
+                        ClusterBP->trainBP(mergedTarget,0.1,5);
                     }
 
-                    impulseResonses.push_back(out1);
 
             }
       }
@@ -135,9 +130,9 @@ void MainWindow::processNet(){
         for(int x = 0; x < impulseResonses.size()*4; x++){
             for(int y = 0; y < impulseResonses[0].size()*4; y++){
                 QColor col = QColor(128,128,128);
-                float colorVal = impulseResonses[x/4][y/4]*2.0-1.0;
+                float colorVal = 2.0*(impulseResonses[x/4][y/4]-0.5);
                 if(colorVal > 0.0) col = QColor(255.0*abs(colorVal),0,0);
-                if(colorVal < 0.0) col = QColor(0,0,255.0*abs(colorVal));
+                if(colorVal <= 0.0) col = QColor(0,0,255.0*abs(colorVal));
                 imageResp->setPixel(y,x,col.rgb());
             }
         }
@@ -184,7 +179,6 @@ void MainWindow::processNet(){
 
         lastErrorBP = currentErrorBP;
         currentErrorBP = sumErrorOverBP;
-
 
         QPen coloredLine;
         QColor col = QColor(255,128,128);

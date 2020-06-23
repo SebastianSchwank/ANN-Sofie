@@ -22,7 +22,7 @@ public:
     void propergate(vector<float> input, vector<float> output, bool sleep);
     vector<vector<float>> getWeights();
     void train(float learningRate);
-    void trainBP(vector<float> target,float learningRate);
+    void trainBP(vector<float> target,float learningRate,int iterations);
     vector<float> getTarget();
 
     vector<float> getActivation();
@@ -68,6 +68,8 @@ private:
     vector<float>         meanActivationCounter;
     vector<float>         valueHardeningReal;
     vector<float>         valueHardeningCounter;
+    vector<float>         rawOutputReal;
+    vector<float>         rawOutputCounter;
 
 };
 
