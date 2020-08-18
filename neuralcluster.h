@@ -24,6 +24,7 @@ public:
     void train(float learningRate);
     void trainBP(vector<float> target,float learningRate,int iterations);
     vector<float> getTarget();
+    float signum(float x);
 
     vector<float> getActivation();
 
@@ -31,45 +32,28 @@ public:
 
 
 private:
-    vector<int>           last_pulse_activation;
-    vector<int>           real_counter;
-    vector<int>           counter_counter;
-    int                   numInputs;
-    int                   numOutputs;
-    int                   numHiddens;
-    vector<vector<float>> weights;
-    vector<vector<float>> momentum;
-    vector<vector<float>> deltaSynapse;
+
+    int                   maxPeriod = 1;
+
+    vector<float>         fireCounter;
     vector<float>         counterActivation;
     vector<float>         lastCounter;
-    vector<float>         realNetActivation;
-    vector<float>         deltaNet;
-    vector<float>         NetActivation;
-    vector<float>         lastNetActivation;
-    vector<float>         beforelastNetActivation;
-    vector<float>         errorNet;
-    vector<float>         realNetActivationSum;
-    vector<float>         counterNet;
-    vector<float>         lastError;
-    vector<float>         firingStateReal;
-    vector<float>         firingStateCounter;
-    vector<float>         differenceVector;
+    vector<float>         polarityCounter;
+    vector<float>         fireReal;
+    vector<float>         realActivation;
+    vector<float>         lastReal;
+    vector<float>         beforelastReal;
+    vector<float>         polarityReal;
+
+    vector<int>           counter;
+    vector<int>           period;
+
+    vector<float>         slowness;
+
+    vector<vector<float>> weights;
+    int                   numInputs,numOutputs,numHiddens;
+
     vector<float>         error;
-    vector<float>         deriveReal;
-    vector<float>         deriveCounter;
-    vector<int>           counter_frequence;
-    vector<float>           counter_pulseActivation;
-    vector<int>           real_frequence;
-    vector<int>           real_pulseActivation;
-    vector<float>         differenceError;
-    vector<float>         firingRate_real;
-    vector<float>         firingRate_counter;
-    vector<float>         meanActivationReal;
-    vector<float>         meanActivationCounter;
-    vector<float>         valueHardeningReal;
-    vector<float>         valueHardeningCounter;
-    vector<float>         rawOutputReal;
-    vector<float>         rawOutputCounter;
 
 };
 

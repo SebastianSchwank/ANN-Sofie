@@ -38,7 +38,7 @@ private:
 
     bool running = false;
 
-    int numLessons = 3;//sizeof (input)/sizeof (input[0]);
+    int numLessons = 1;//sizeof (input)/sizeof (input[0]);
     int iteration = 0;
     float currentErrorBP,CurrentErrorMine;
     float lastErrorBP,lastErrorMine;
@@ -46,8 +46,8 @@ private:
     int currentFrequency = 0;
     int phase = 0;
     int numInputs = 16;//sizeof (input[0])/sizeof (input[0][0]);
-    int numOutputs = 3+8;//sizeof (output[0])/sizeof (output[0][0]);
-    int numHiddens = 23;
+    int numOutputs = 1+8;//sizeof (output[0])/sizeof (output[0][0]);
+    int numHiddens = 8;
     NeuralCluster* Cluster0;
     NeuralCluster* ClusterBP;
     QTimer *timer;
