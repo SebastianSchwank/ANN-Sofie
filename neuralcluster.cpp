@@ -104,7 +104,7 @@ void NeuralCluster::train(float learningRate){
 
                 //weights[i][j] *= counterActivation[j]*(1.0-abs(realNetActivation[i]-counterActivation[i]))*learningRate*0.001+1.0;
                 //weights[i][j] *= 1.0+counterActivation[j]*(1.0-abs(realNetActivation[i]-counterActivation[i]));
-                weights[i][j] += (beforelastReal[j])*(realActivation[i]-lastReal[i])*(lastReal[i])*(1.0-lastReal[i]);
+                weights[i][j] += (lastReal[j])*(realActivation[i]-lastReal[i])*(lastReal[i])*(1.0-lastReal[i]);
             }
 
         }

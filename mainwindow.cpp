@@ -67,7 +67,7 @@ void MainWindow::processNet(){
         //frequency = 4;
         vector<vector<float>> impulseResonses;
         for(int o = 0; o < numOutputs-numLessons; o++){
-            frequency = o+1;
+            frequency = (rand()+1)%(numOutputs-numLessons-1);
             for(int k = 0; k < numLessons; k++){
 
 
