@@ -42,8 +42,8 @@ private:
     vector<float>         fireReal;
     vector<float>         realActivation;
     vector<float>         lastReal;
-    vector<float>         beforelastReal;
     vector<float>         polarityReal;
+    vector<float>         derived;
 
     vector<int>           counter;
     vector<int>           period;

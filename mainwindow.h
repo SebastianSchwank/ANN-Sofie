@@ -45,9 +45,9 @@ private:
 
     int currentFrequency = 0;
     int phase = 0;
-    int numInputs = 16;//sizeof (input[0])/sizeof (input[0][0]);
-    int numOutputs = 1+8;//sizeof (output[0])/sizeof (output[0][0]);
-    int numHiddens = 8;
+    int numInputs = 8;//sizeof (input[0])/sizeof (input[0][0]);
+    int numOutputs = 4+1;//sizeof (output[0])/sizeof (output[0][0]);
+    int numHiddens = 16;
     NeuralCluster* Cluster0;
     NeuralCluster* ClusterBP;
     QTimer *timer;
