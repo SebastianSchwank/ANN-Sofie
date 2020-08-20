@@ -92,12 +92,12 @@ void NeuralCluster::train(float learningRate){
 
             bool skip = false;
 
-            if((i >= 0)&&(j < numInputs) && (i < numInputs) && (j < numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
-            if((i >= numInputs)&& (j >= 0) && (i <= numInputs+numOutputs)&& (j <=numInputs)){ weights[i][j] = 0.0; skip = true;}
-            if((i >= numInputs)&& (j >= numInputs) && (i <= numInputs+numOutputs)&& (j <=numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
-            if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
+            //if((i >= 0)&&(j < numInputs) && (i < numInputs) && (j < numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
+            //if((i >= numInputs)&& (j >= 0) && (i <= numInputs+numOutputs)&& (j <=numInputs)){ weights[i][j] = 0.0; skip = true;}
+            //if((i >= numInputs)&& (j >= numInputs) && (i <= numInputs+numOutputs)&& (j <=numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
+            //if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
 
-            if(i == j){ weights[i][j] = 0.0; skip = true;}
+            //if(i == j){ weights[i][j] = 0.0; skip = true;}
 
 
             if(!skip){
@@ -139,12 +139,12 @@ void NeuralCluster::trainBP(vector<float> target,float learningRate,int iteratio
         for(int j = 0; j < weights[i].size(); j++){
             weights[i][j] += fireCounter[j]*(error[i])*learningRate;
 
-            if((i >= 0)&& (j >= 0) && (i <= numInputs)&& (j <= numInputs)) weights[i][j] = 0.0;
-            if((i >= numInputs)&& (j >= 0) && (i <= numInputs+numOutputs)&& (j <= numInputs+numOutputs)) weights[i][j] = 0.0;
-            if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs) && (i <= weights.size()-1)&& (j <= weights.size()-2)) weights[i][j] = 0.0;
+            //if((i >= 0)&& (j >= 0) && (i <= numInputs)&& (j <= numInputs)) weights[i][j] = 0.0;
+            //if((i >= numInputs)&& (j >= 0) && (i <= numInputs+numOutputs)&& (j <= numInputs+numOutputs)) weights[i][j] = 0.0;
+            //if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs) && (i <= weights.size()-1)&& (j <= weights.size()-2)) weights[i][j] = 0.0;
 
 
-            if(i == j) weights[i][j] = 0.0;
+            //if(i == j) weights[i][j] = 0.0;
 
         }
     }

@@ -60,7 +60,7 @@ void MainWindow::processNet(){
 
         //Test pass error calculation
         currentFrequency = (currentFrequency+1)%(numOutputs-numLessons-1);
-        int frequency = currentFrequency+1;//(((currentFrequency)%(numOutputs+8)));
+        int frequency = currentFrequency+2;//(((currentFrequency)%(numOutputs+8)));
         if(currentFrequency == 1) phase = (phase+1)%numOutputs;
 
 
@@ -89,7 +89,7 @@ void MainWindow::processNet(){
                     targetV[numLessons+frequency-1] = 1.0;
 
 
-                    for(int i = 0; i < 8; i++){
+                    for(int i = 0; i < 4; i++){
                         Cluster0->propergate(inputV,emptyV,false);
                         ClusterBP->propergate(inputV,emptyV,false);
                     }
@@ -125,7 +125,7 @@ void MainWindow::processNet(){
 
 
 
-                    for(int i = 0; i < 8; i++){
+                    for(int i = 0; i < 4; i++){
                         Cluster0->propergate(inputV,targetV,false);
                         Cluster0->train(1.0);
                     }
@@ -141,7 +141,7 @@ void MainWindow::processNet(){
                     }
 
 
-                    for(int i = 0; i < 8; i++){
+                    for(int i = 0; i < 4; i++){
                         ClusterBP->propergate(inputV,emptyV,true);
                         ClusterBP->trainBP(mergedTarget,1.0,5);
                     }
