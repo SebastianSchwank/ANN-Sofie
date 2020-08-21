@@ -68,7 +68,7 @@ void MainWindow::processNet(){
         vector<vector<float>> impulseResonses;
         for(int o = 0; o < numOutputs-numLessons; o++){
             frequency = o+1;//(rand()+1)%(numOutputs-numLessons-1);
-            phase = rand()%(frequency);
+            //phase = rand()%(frequency*8)+1.0;
             //frequency =  (rand()+1)%(numOutputs-numLessons-1);;
 
 
@@ -78,7 +78,7 @@ void MainWindow::processNet(){
                     vector<float> emptyV;
                 //Create input vector for holding the input data (Frequency is random Waveform depends on the lesson number (is mapped to output-neurons))
 
-                    vector<float> inputV = MainWindow::inputFunction(k,numInputs,frequency,phase);
+                    vector<float> inputV = MainWindow::inputFunction(k,numInputs,frequency*2,phase);
 
                     vector<float> targetV;
                     for(int j = 0; j < numOutputs; j++){
@@ -89,7 +89,7 @@ void MainWindow::processNet(){
                     targetV[numLessons+frequency-1] = 1.0;
 
 
-                    for(int i = 0; i < 4; i++){
+                    for(int i = 0; i < 16; i++){
                         Cluster0->propergate(inputV,emptyV,false);
                         ClusterBP->propergate(inputV,emptyV,false);
                     }
@@ -113,7 +113,7 @@ void MainWindow::processNet(){
                //Create empty vector as output placeholder
                    vector<float> emptyV;
                //Create input vector for holding the input data (Frequency is random Waveform depends on the lesson number (is mapped to output-neurons))
-                   vector<float> inputV = MainWindow::inputFunction(k,numInputs,frequency,phase);
+                   vector<float> inputV = MainWindow::inputFunction(k,numInputs,frequency*2,phase);
 
                    vector<float> targetV;
                    for(int j = 0; j < numOutputs; j++){
@@ -125,7 +125,7 @@ void MainWindow::processNet(){
 
 
 
-                    for(int i = 0; i < 4; i++){
+                    for(int i = 0; i < 16; i++){
                         Cluster0->propergate(inputV,targetV,false);
                         Cluster0->train(1.0);
                     }
@@ -141,7 +141,7 @@ void MainWindow::processNet(){
                     }
 
 
-                    for(int i = 0; i < 4; i++){
+                    for(int i = 0; i < 16; i++){
                         ClusterBP->propergate(inputV,emptyV,true);
                         ClusterBP->trainBP(mergedTarget,1.0,5);
                     }

@@ -25,7 +25,7 @@ NeuralCluster::NeuralCluster(int inputs, int outputs, int hidden){
 
             //weightColumn.push_back(0.01);
 
-            weightColumn.push_back(0.1*((1.0*rand()/RAND_MAX-0.5)));
+            weightColumn.push_back(0.5*((1.0*rand()/RAND_MAX-0.5)));
 
         }
         weights.push_back(weightColumn);
@@ -92,19 +92,19 @@ void NeuralCluster::train(float learningRate){
 
             bool skip = false;
 
-            //if((i >= 0)&&(j < numInputs) && (i < numInputs) && (j < numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
-            //if((i >= numInputs)&& (j >= 0) && (i <= numInputs+numOutputs)&& (j <=numInputs)){ weights[i][j] = 0.0; skip = true;}
-            //if((i >= numInputs)&& (j >= numInputs) && (i <= numInputs+numOutputs)&& (j <=numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
-            //if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
+            if((i >= 0)&&(j < numInputs) && (i < numInputs) && (j < numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
+            if((i >= numInputs)&& (j >= 0) && (i <= numInputs+numOutputs)&& (j <=numInputs)){ weights[i][j] = 0.0; skip = true;}
+            if((i >= numInputs)&& (j >= numInputs) && (i <= numInputs+numOutputs)&& (j <=numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
+            if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
 
-            //if(i == j){ weights[i][j] = 0.0; skip = true;}
+            if(i == j){ weights[i][j] = 0.0; skip = true;}
 
 
             if(!skip){
 
                 //weights[i][j] *= counterActivation[j]*(1.0-abs(realNetActivation[i]-counterActivation[i]))*learningRate*0.001+1.0;
                 //weights[i][j] *= 1.0+counterActivation[j]*(1.0-abs(realNetActivation[i]-counterActivation[i]));
-                weights[i][j] += (lastReal[j])*(realActivation[i]-lastReal[i])*lastReal[i]*(1.0-lastReal[i]);
+                weights[i][j] += (counterActivation[j])*((realActivation[i]-counterActivation[i]))*counterActivation[i]*(1.0-counterActivation[i])*0.1;
                 //weights[j][i] += (lastReal[j])*(realActivation[i]-lastReal[i])*lastReal[i]*(1.0-lastReal[i])*2.5;
             }
 
@@ -117,7 +117,7 @@ void NeuralCluster::train(float learningRate){
 
 void NeuralCluster::trainBP(vector<float> target,float learningRate,int iterations){
 
-    for(int i = 0; i < target.size(); i++) error[i] = (target[i]-counterActivation[i])*(counterActivation[i])*(1.0-counterActivation[i]);
+    for(int i = 0; i < target.size(); i++) error[i] = (target[i]-counterActivation[i])*counterActivation[i]*(1.0-counterActivation[i]);
 
     vector<float> newError = error;
 
@@ -128,7 +128,7 @@ void NeuralCluster::trainBP(vector<float> target,float learningRate,int iteratio
         for(int j = 0; j < weights[i].size(); j++){
                  bpError +=  weights[i][j]*(error[j]);
         }
-        newError[i] = (bpError*(counterActivation[i])*(1.0-counterActivation[i]));
+        newError[i] = (bpError*counterActivation[i]*(1.0-counterActivation[i]));
     }
 
     }
@@ -137,14 +137,14 @@ void NeuralCluster::trainBP(vector<float> target,float learningRate,int iteratio
     float maxVal = 0.0;
     for(int i = 0; i < weights.size(); i++){
         for(int j = 0; j < weights[i].size(); j++){
-            weights[i][j] += fireCounter[j]*(error[i])*learningRate;
+            weights[i][j] += fireCounter[j]*(error[i])*learningRate*0.1;
 
-            //if((i >= 0)&& (j >= 0) && (i <= numInputs)&& (j <= numInputs)) weights[i][j] = 0.0;
-            //if((i >= numInputs)&& (j >= 0) && (i <= numInputs+numOutputs)&& (j <= numInputs+numOutputs)) weights[i][j] = 0.0;
-            //if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs) && (i <= weights.size()-1)&& (j <= weights.size()-2)) weights[i][j] = 0.0;
+            if((i >= 0)&& (j >= 0) && (i <= numInputs)&& (j <= numInputs)) weights[i][j] = 0.0;
+            if((i >= numInputs)&& (j >= 0) && (i <= numInputs+numOutputs)&& (j <= numInputs+numOutputs)) weights[i][j] = 0.0;
+            if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs) && (i <= weights.size()-1)&& (j <= weights.size()-2)) weights[i][j] = 0.0;
 
 
-            //if(i == j) weights[i][j] = 0.0;
+            if(i == j) weights[i][j] = 0.0;
 
         }
     }
@@ -185,6 +185,7 @@ void NeuralCluster::propergate(vector<float> input,vector<float> output, bool sl
                      weightsSum *= weights[i][j];
             }
 
+            derived[i] = 1.0;
             deltaEnergysI.push_back(1.0/(1.0+exp(-x)));
             deltaEnergys.push_back(1.0/(1.0+exp(-y)));
 
