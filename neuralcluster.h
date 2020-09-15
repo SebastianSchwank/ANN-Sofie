@@ -7,6 +7,7 @@
 #include <cmath>
 #include <QDebug>
 
+
 //Ideas:
 //Probailistic Firering
 //Dropout
@@ -17,9 +18,9 @@ using namespace std;
 class NeuralCluster
 {
 public:
-    NeuralCluster(int inputs, int outputs, int hidden);
+    NeuralCluster(int inputs, int outputs, int hidden, int rekurrent);
 
-    void propergate(vector<float> input, vector<float> output, bool sleep);
+    void propergate(vector<float> input, vector<float> output, bool sleep, bool hiddenWrite);
     vector<vector<float>> getWeights();
     void train(float learningRate);
     void trainBP(vector<float> target,float learningRate,int iterations);
@@ -51,7 +52,8 @@ private:
     vector<float>         slowness;
 
     vector<vector<float>> weights;
-    int                   numInputs,numOutputs,numHiddens;
+    vector<vector<float>> momentum;
+    int                   numInputs,numOutputs,numHiddens,numRekurrent;
 
     vector<float>         error;
 

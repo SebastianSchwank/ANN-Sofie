@@ -36,6 +36,9 @@ private:
     QImage *image;
     QImage *imageResp;
 
+    QImage *imageScaled;
+    QImage *imageRespScaled;
+
     bool running = false;
 
     int numLessons = 3;//sizeof (input)/sizeof (input[0]);
@@ -46,10 +49,11 @@ private:
     int currentFrequency = 0;
     int phase = 0;
     int numInputs = 16;//sizeof (input[0])/sizeof (input[0][0]);
-    int numOutputs = 3+3;//sizeof (output[0])/sizeof (output[0][0]);
-    int numHiddens = 16;
+    int numOutputs = 8;//sizeof (output[0])/sizeof (output[0][0]);
+    int numHiddens = 32;
+    int numRekurrent = 0;
     NeuralCluster* Cluster0;
-    NeuralCluster* ClusterBP;
+    NeuralCluster* Cluster1;
     QTimer *timer;
     QGraphicsScene* ErrorView;
 

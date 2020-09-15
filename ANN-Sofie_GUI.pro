@@ -25,14 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        feedforwardnetworkbp.cpp \
         layer.cpp \
         main.cpp \
         mainwindow.cpp \
         neuralcluster.cpp
 
 HEADERS += \
-        feedforwardnetworkbp.h \
         layer.h \
         mainwindow.h \
         neuralcluster.h
@@ -44,3 +42,5 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES +=
