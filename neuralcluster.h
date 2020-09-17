@@ -26,6 +26,7 @@ public:
     void trainBP(vector<float> target,float learningRate,int iterations);
     vector<float> getTarget();
     float signum(float x);
+    float minMax(float x);
 
     vector<float> getActivation();
 
@@ -51,11 +52,15 @@ private:
 
     vector<float>         slowness;
 
+    vector<float>         slope;
     vector<vector<float>> weights;
     vector<vector<float>> momentum;
     int                   numInputs,numOutputs,numHiddens,numRekurrent;
 
     vector<float>         error;
+
+    float maxResultReal = 1.0;
+    float maxResultCounter = 1.0;
 
 };
 
