@@ -18,7 +18,7 @@ using namespace std;
 class NeuralCluster
 {
 public:
-    NeuralCluster(int inputs, int outputs, int hidden, int rekurrent);
+    NeuralCluster(int inputs, int outputs, int hidden, int attention);
 
     void propergate(vector<float> input, vector<float> output, bool sleep, bool hiddenWrite);
     vector<vector<float>> getWeights();
@@ -44,6 +44,7 @@ private:
     vector<float>         fireReal;
     vector<float>         realActivation;
     vector<float>         lastReal;
+    vector<float>         beforelastReal;
     vector<float>         polarityReal;
     vector<float>         derived;
 
@@ -57,7 +58,9 @@ private:
     vector<vector<float>> momentum;
     int                   numInputs,numOutputs,numHiddens,numRekurrent;
 
-    vector<float>         error;
+    vector<float>         derivedError;
+    vector<float>         error,lastError,beforeLasteError;
+
 
     float maxResultReal = 1.0;
     float maxResultCounter = 1.0;
