@@ -28,16 +28,16 @@ NeuralCluster::NeuralCluster(int inputs, int outputs, int hidden, int attention)
 
             //weightColumn.push_back(0.01);
 
-            weightColumn.push_back(0.01*((1.0*rand()/RAND_MAX-0.5)));
-            momentumColumn.push_back(0.01*((1.0*rand()/RAND_MAX-0.5)));
+            weightColumn.push_back(0.002*((1.0*rand()/RAND_MAX-0.5)));
+            momentumColumn.push_back(0.002*((1.0*rand()/RAND_MAX-0.5)));
 
         }
         weights.push_back(weightColumn);
         momentum.push_back(momentumColumn);
         slope.push_back(1.0);
-        error.push_back(0.01*((1.0*rand()/RAND_MAX-0.5)));
-        lastError.push_back(0.01*((1.0*rand()/RAND_MAX-0.5)));
-        beforeLasteError.push_back(0.01*((1.0*rand()/RAND_MAX-0.5)));
+        error.push_back(0.0*((1.0*rand()/RAND_MAX-0.5)));
+        lastError.push_back(0.0*((1.0*rand()/RAND_MAX-0.5)));
+        beforeLasteError.push_back(0.0*((1.0*rand()/RAND_MAX-0.5)));
         derivedError.push_back(0.0);
     }
 
@@ -147,10 +147,10 @@ void NeuralCluster::train(float learningRate){
                 if(derived[i] != derived[i]) derived[i] = 0.0;
                 float derivedError = ((error[i])/((2.0-error[i])*(2.0+error[i])));
 
-                //momentum[i][j] *= currentError;
+                momentum[i][j] *= currentError;
                 momentum[i][j] *= 0.99;
                 momentum[i][j] += (fireCounter[j])*(error[i])*learningRate;
-                weights[i][j] +=  (fireCounter[j])*(error[i])*learningRate*10.0+momentum[i][j]*(1.0/3.0);
+                weights[i][j] +=  (fireCounter[j])*(error[i])*learningRate+momentum[i][j]*(1.0/3.0);
 
 
 

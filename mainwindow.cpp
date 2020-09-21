@@ -127,9 +127,9 @@ void MainWindow::processNet(){
                     //phase = 1.0*rand()/RAND_MAX;
 
                     vector<float> inputV = MainWindow::inputFunction(3,numInputs,sqrt((1.0*k+1.0)),phase);
-                    vector<float> targetV = MainWindow::inputFunction(2,numInputs,sqrt((1.0*k+1.0)),phase);
+                    vector<float> targetV = MainWindow::inputFunction(2,numInputs*3,sqrt((1.0*k+1.0)),phase);
 
-                    for(int i = 0; i < 32; i++){
+                    for(int i = 0; i < 6; i++){
                         Cluster0->propergate(inputV,emptyV,false,true);
                     }
 
@@ -164,12 +164,12 @@ void MainWindow::processNet(){
                    //phase = 1.0*rand()/RAND_MAX;
 
                    vector<float> inputV = MainWindow::inputFunction(3,numInputs,sqrt((1.0*k+1.0)),phase);
-                   vector<float> targetV = MainWindow::inputFunction(2,numInputs,sqrt((1.0*k+1.0)),phase);
+                   vector<float> targetV = MainWindow::inputFunction(2,numInputs*3,sqrt((1.0*k+1.0)),phase);
 
-                    for(int i = 0; i < 32; i++){
+                    for(int i = 0; i < 6; i++){
                         Cluster0->propergate(inputV,targetV,false,true);
                     }
-                    Cluster0->train(0.0001);
+                    Cluster0->train(0.001);
 
 
                     /*

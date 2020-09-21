@@ -44,7 +44,7 @@ private:
 
     bool running = false;
 
-    int numLessons = 2;//sizeof (input)/sizeof (input[0]);
+    int numLessons = 1;//sizeof (input)/sizeof (input[0]);
     int iteration = 0;
     float currentErrorBP,CurrentErrorMine;
     float lastErrorBP,lastErrorMine;
@@ -52,7 +52,7 @@ private:
     int currentFrequency = 0;
     float phase = 0;
     int numInputs = 8;//sizeof (input[0])/sizeof (input[0][0]);
-    int numOutputs = 8;//sizeof (output[0])/sizeof (output[0][0]);
+    int numOutputs = 24;//sizeof (output[0])/sizeof (output[0][0]);
     int numHiddens = 16;
     int numAttentions = 8;
     NeuralCluster* Cluster0;
