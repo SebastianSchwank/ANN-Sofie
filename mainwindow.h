@@ -28,7 +28,7 @@ private slots:
     void on_pushButton_2_clicked();
 
 private:
-    vector<float> inputFunction(int type, int length, int periode, int phase);
+    vector<float> inputFunction(int type, int length, float frequence, float phase);
 
 private:
     Ui::MainWindow *ui;
@@ -44,17 +44,17 @@ private:
 
     bool running = false;
 
-    int numLessons = 16;//sizeof (input)/sizeof (input[0]);
+    int numLessons = 2;//sizeof (input)/sizeof (input[0]);
     int iteration = 0;
     float currentErrorBP,CurrentErrorMine;
     float lastErrorBP,lastErrorMine;
 
     int currentFrequency = 0;
-    int phase = 0;
-    int numInputs = 16;//sizeof (input[0])/sizeof (input[0][0]);
-    int numOutputs = 1;//sizeof (output[0])/sizeof (output[0][0]);
-    int numHiddens = 8;
-    int numAttentions = 16;
+    float phase = 0;
+    int numInputs = 8;//sizeof (input[0])/sizeof (input[0][0]);
+    int numOutputs = 8;//sizeof (output[0])/sizeof (output[0][0]);
+    int numHiddens = 16;
+    int numAttentions = 8;
     NeuralCluster* Cluster0;
     NeuralCluster* Cluster1;
     QTimer *timer;

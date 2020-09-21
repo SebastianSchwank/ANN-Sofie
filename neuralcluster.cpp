@@ -113,8 +113,11 @@ void NeuralCluster::train(float learningRate){
             bool skip = false;
 
 
+
             if((i >= 0)&&(j < numInputs) && (i < numInputs) && (j < numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
+
             //if((i >= numInputs)&& (j >= 0) && (i < numInputs+numOutputs)&& (j < numInputs)){ weights[i][j] = 0.0; skip = true;}
+
             if((i >= numInputs)&& (j >= numInputs) && (i < numInputs+numOutputs)&& (j < numInputs+numOutputs)){ weights[i][j] = 0.0; skip = true;}
 
             //if((i >= numInputs+numOutputs)&& (j >= numInputs+numOutputs) && (j <= numInputs+numOutputs+numHiddens) && (i <= numInputs+numOutputs+numHiddens)){ weights[i][j] = 0.0; skip = true;}
@@ -139,7 +142,7 @@ void NeuralCluster::train(float learningRate){
                 //weights[i][j] *= counterActivation[j]*(1.0-abs(realNetActivation[i]-counterActivation[i]))*learningRate*0.001+1.0;
                 //weights[i][j] *= 1.0+counterActivation[j]*(1.0-abs(realNetActivation[i]-counterActivation[i]));
 
-                float currentError = ((1.0-(fireCounter[j])*(fireCounter[j])*error[i]*error[i]*0.25));
+                float currentError = ((1.0-abs((fireCounter[j])*(error[i]))));
                 derived[i] = ((error[i])/((2.0-error[i])*(2.0+error[i])));
                 if(derived[i] != derived[i]) derived[i] = 0.0;
                 float derivedError = ((error[i])/((2.0-error[i])*(2.0+error[i])));
