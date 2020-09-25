@@ -19,14 +19,15 @@ class NeuralCluster
 {
 public:
     NeuralCluster(int inputs, int outputs, int hidden, int attention);
-
-    void propergate(vector<float> input, vector<float> output, bool sleep, bool hiddenWrite);
+    void inputData(vector<float> input,vector<float> output,bool inverted);
+    void propergate(vector<float> input, vector<float> output, bool sleep, bool hiddenWrite, bool inverted);
     vector<vector<float>> getWeights();
     void train(float learningRate);
     void trainBP(vector<float> target,float learningRate,int iterations);
     vector<float> getTarget();
     float signum(float x);
     float minMax(float x);
+    void resetSampler();
 
     vector<float> getActivation();
 
@@ -39,6 +40,7 @@ private:
 
     vector<float>         fireCounter;
     vector<float>         counterActivation;
+    vector<float>         beforelastCounter;
     vector<float>         lastCounter;
     vector<float>         polarityCounter;
     vector<float>         fireReal;
@@ -48,6 +50,28 @@ private:
     vector<float>         polarityReal;
     vector<float>         derived;
 
+    vector<float>         realActivity;
+    vector<float>         counterActivity;
+
+    vector<float>         samplerReal;
+    vector<float>         samplerCounter;
+
+
+    vector<float>         OutputSamplerReal;
+    vector<float>         OutputSamplerCounter;
+
+    vector<float>         integratorReal;
+    vector<float>         integratorCounter;
+
+    vector<float>         OutputIntegratorReal;
+    vector<float>         OutputIntegratorCounter;
+
+    vector<float>         EnergyFlowReal;
+    vector<float>         EnergyFlowCounter;
+
+    vector<float>         ActivityReal;
+    vector<float>         ActivityCounter;
+
     vector<int>           counter;
     vector<int>           period;
 
@@ -56,14 +80,15 @@ private:
     vector<float>         slope;
     vector<vector<float>> weights;
     vector<vector<float>> momentum;
+    vector<vector<int>>   firingMatrixCounter;
+
+    vector<float>         momentumVector;
     int                   numInputs,numOutputs,numHiddens,numRekurrent;
 
     vector<float>         derivedError;
     vector<float>         error,lastError,beforeLasteError;
 
-
-    float maxResultReal = 1.0;
-    float maxResultCounter = 1.0;
+    float                 samples;
 
 };
 

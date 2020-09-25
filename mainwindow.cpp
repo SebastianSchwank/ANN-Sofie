@@ -14,10 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
     Cluster0 = new NeuralCluster(numInputs,numOutputs,numHiddens,numAttentions);
 
     image = new QImage(Cluster0->getActivation().size(),Cluster0->getActivation().size(),QImage::Format_RGB32);
-    imageResp = new QImage((numInputs+numOutputs+numHiddens+numAttentions+1),numLessons*numOutputs,QImage::Format_RGB32);
+    imageResp = new QImage((numInputs+numOutputs+numHiddens+numAttentions+1),numLessons*numOutputs*2,QImage::Format_RGB32);
 
     imageScaled = new QImage(Cluster0->getActivation().size()*2,Cluster0->getActivation().size()*2,QImage::Format_RGB32);
-    imageRespScaled = new QImage((numInputs+numOutputs+numHiddens+numAttentions+1)*4,numLessons*numOutputs*4,QImage::Format_RGB32);
+    imageRespScaled = new QImage((numInputs+numOutputs+numHiddens+numAttentions+1)*4,numLessons*numOutputs*4*2,QImage::Format_RGB32);
 
     scene2 = new QGraphicsScene;
     scene1 = new QGraphicsScene;
@@ -34,7 +34,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-vector<float> MainWindow::inputFunction(int type, int length, float frequence, float phase){
+vector<float> MainWindow::inputFunction(int type, int length,float frequency,float phase){
     vector<float> function;
     /*
     if(type == 0){
@@ -54,12 +54,12 @@ vector<float> MainWindow::inputFunction(int type, int length, float frequence, f
     */
     if(type == 2){
         for(int i = 0; i < length; i++){
-          function.push_back(sin(3.16*((frequence*i/length)+2.0*phase)));
+          function.push_back(sin(2.0*3.16*((frequency*i/length)+phase)));
         }
     }
     if(type == 3){
         for(int i = 0; i < length; i++){
-          function.push_back((1.0*rand()/RAND_MAX)*sin(3.16*((frequence*i/length)+2.0*phase)));
+          function.push_back((1.0*rand()/RAND_MAX)*sin(2.0*3.16*((frequency*i/length)+phase)));
         }
     }
     return function;
@@ -72,9 +72,6 @@ void MainWindow::processNet(){
         //Test pass error calculation
         //currentFrequency = (currentFrequency+1)%(numOutputs-numLessons-1);
         int frequency = currentFrequency+3;//(((currentFrequency)%(numOutputs+8)));
-        phase = (phase+0.05);
-        if(phase >= 1.0) phase = 0.0;
-
         //phase = (rand())%(numOutputs+numLessons+24);
         //phase = 1;
 
@@ -119,27 +116,43 @@ void MainWindow::processNet(){
 
 */
 
-            for(int k = 0; k < (numOutputs*numLessons); k++){
+            //phase += 0.01;
+            if(phase >= 1.0) phase = 0.0;
+
+            for(int k = 0; k < (numOutputs); k++){
 
                 //Create empty vector as output placeholder
                     vector<float> emptyV;
                 //Create input vector for holding the input data (Frequency is random Waveform depends on the lesson number (is mapped to output-neurons))
-                    //phase = 1.0*rand()/RAND_MAX;
 
-                    vector<float> inputV = MainWindow::inputFunction(3,numInputs,sqrt((1.0*k+1.0)),phase);
-                    vector<float> targetV = MainWindow::inputFunction(2,numInputs*3,sqrt((1.0*k+1.0)),phase);
+                    vector<float> inputV = MainWindow::inputFunction(2,numInputs,sqrt(k+1.0),phase);
+                    vector<float> targetV;// = MainWindow::inputFunction(2,numInputs,k+2,phase);
 
-                    for(int i = 0; i < 6; i++){
-                        Cluster0->propergate(inputV,emptyV,false,true);
+                    for(int i = 0; i < numOutputs; i++) targetV.push_back(-1.0);
+                    targetV[k] = 1.0;
+
+/*
+                    float max = 0.0;
+                    for(int i = 0; i < numOutputs; i++) if(max < abs(targetV[i])) max = abs(targetV[i]);
+                    float mean = 0.0;
+                    for(int i = 0; i < numOutputs; i++) mean += (targetV[i]/max);
+                    for(int i = 0; i < numOutputs; i++) targetV[i] = (targetV[i]/max)-(mean/(numOutputs));
+*/
+
+
+                    Cluster0->resetSampler();
+                    for(int i = 0; i < 128; i++){
+                        Cluster0->propergate(inputV,emptyV,false,false,false);
                     }
 
-                    vector<float> out0 = Cluster0->getActivation();
+                     vector<float> out0 = Cluster0->getActivation();
 
                     for(int i = 0; i < numOutputs; i++){
                         sumErrorOver += (targetV[i]-out0[i+numInputs])*(targetV[i]-out0[i+numInputs]);
                         //out0[i+numInputs] = abs(targetV[i]-out0[i+numInputs]);
                     }
-                    sumErrorOver = sumErrorOver/numOutputs;
+
+                    //cout << out0[numInputs+numOutputs] << "\n";
 
                     impulseResonses.push_back(out0);
 
@@ -155,21 +168,48 @@ void MainWindow::processNet(){
 
            }
 
-           for(int k = 0; k < (numOutputs*numLessons); k++){
+           for(int k = 0; k < (numOutputs); k++){
             //Training pass
+
+               //float phase = (1.0*rand()/RAND_MAX);
 
                //Create empty vector as output placeholder
                    vector<float> emptyV;
                //Create input vector for holding the input data (Frequency is random Waveform depends on the lesson number (is mapped to output-neurons))
-                   //phase = 1.0*rand()/RAND_MAX;
 
-                   vector<float> inputV = MainWindow::inputFunction(3,numInputs,sqrt((1.0*k+1.0)),phase);
-                   vector<float> targetV = MainWindow::inputFunction(2,numInputs*3,sqrt((1.0*k+1.0)),phase);
+                   vector<float> inputV = MainWindow::inputFunction(2,numInputs,sqrt(k+1),phase);
+                   vector<float> targetV;// = MainWindow::inputFunction(2,numInputs,k+2,phase);
 
-                    for(int i = 0; i < 6; i++){
-                        Cluster0->propergate(inputV,targetV,false,true);
-                    }
-                    Cluster0->train(0.001);
+                   for(int i = 0; i < numOutputs; i++) targetV.push_back(-1.0);
+                   targetV[k] = 1.0;
+
+
+                   Cluster0->resetSampler();
+                   for(int i = 0; i < 128; i++){
+                       Cluster0->propergate(inputV,targetV,false,false,false);
+                   }
+                   Cluster0->train(0.001);
+/*
+                   Cluster0->resetSampler();
+                   for(int i = 0; i < 128; i++){
+                       Cluster0->propergate(inputV,targetV,false,false,true);
+                   }
+                   Cluster0->train(0.01);
+*/
+
+                   vector<float> out0 = Cluster0->getActivation();
+
+                   impulseResonses.push_back(out0);
+
+
+
+/*
+                   Cluster0->resetSampler();
+                   for(int i = 0; i < 128; i++){
+                       Cluster0->propergate(inputV,targetV,false,false,true);
+                   }
+                   Cluster0->train(0.01);
+*/
 
 
                     /*
@@ -193,6 +233,8 @@ void MainWindow::processNet(){
 
       }
 
+        if(iteration%1 == 0){
+
 
         for(int x = 0; x < impulseResonses.size(); x++){
             for(int y = 0; y < impulseResonses[0].size(); y++){
@@ -205,13 +247,13 @@ void MainWindow::processNet(){
         }
 
 
-        float max = -999999.9;
+        float max = 0.0;
         for(int x = 0; x < Cluster0->getActivation().size(); x++){
             for(int y = 0; y < Cluster0->getActivation().size(); y++){
-                QColor col = QColor(128,128,128);
                 if(abs(Cluster0->getWeights()[y][x]) > max) max = abs(Cluster0->getWeights()[y][x]);
             }
         }
+
 
         for(int x = 0; x < Cluster0->getActivation().size(); x++){
             for(int y = 0; y < Cluster0->getActivation().size(); y++){
@@ -224,6 +266,11 @@ void MainWindow::processNet(){
             }
         }
 
+        scene1->clear();
+        scene2->clear();
+
+        }
+
 
         if(!imageScaled->isNull()) delete imageScaled;
         if(!imageRespScaled->isNull()) delete imageRespScaled;
@@ -233,7 +280,6 @@ void MainWindow::processNet(){
         QSize pixSize2 = imageRespScaled->size();
         *imageScaled = (image->scaled(pixSize1, Qt::KeepAspectRatio));
         *imageRespScaled = (imageResp->scaled(pixSize2, Qt::KeepAspectRatio));
-
 
 
         //image = new QImage(ClusterBP->getActivation().size()*2,ClusterBP->getActivation().size()*2,QImage::Format_RGB32);
@@ -262,10 +308,7 @@ void MainWindow::processNet(){
         coloredLine.setColor(col);
         ErrorView->addLine(iteration,0,iteration+1,0);
         ErrorView->addLine(iteration,-lastErrorBP*4,iteration+1,-currentErrorBP*4);
-        ErrorView->addLine(iteration,-lastErrorMine*64,iteration+1,-CurrentErrorMine*64,coloredLine);
-
-            scene1->clear();
-            scene2->clear();
+        ErrorView->addLine(iteration,-lastErrorMine*8,iteration+1,-CurrentErrorMine*8,coloredLine);
 
            scene1->addPixmap(QPixmap::fromImage(*imageScaled));
            scene2->addPixmap(QPixmap::fromImage(*imageRespScaled));
